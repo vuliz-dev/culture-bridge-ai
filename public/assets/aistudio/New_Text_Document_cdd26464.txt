@@ -1,0 +1,258 @@
+CULTUREBRIDGE AI
+KẾ HOẠCH XÂY DỰNG SẢN PHẨM WEB DEMO
+AI Cultural Business Copilot
+
+MỤC TIÊU
+Xây dựng một MVP web có thể trình diễn trong Hackathon, chứng minh CultureBridge AI giúp doanh nghiệp Việt Nam giao tiếp kinh doanh phù hợp hơn với đối tác quốc tế thông qua việc kết hợp AI, bối cảnh kinh doanh và tri thức văn hóa được kiểm chứng.
+
+Phạm vi MVP: Việt Nam – UAE và Việt Nam – Qatar | Thời gian: 2–3 ngày
+
+ 1. Tóm tắt định hướng sản phẩm
+CultureBridge AI được định vị là AI Cultural Business Copilot – trợ lý giao tiếp kinh doanh xuyên văn hóa. Sản phẩm hỗ trợ doanh nghiệp Việt Nam chuẩn bị trước khi tiếp xúc, trao đổi và đàm phán với đối tác nước ngoài.
+Giá trị cốt lõi không phải là dịch thuật đơn thuần, mà là:
+•	Hiểu mục đích giao tiếp kinh doanh của người dùng.
+•	Đặt nội dung vào bối cảnh quốc gia, vai trò và tình huống cụ thể.
+•	Điều chỉnh cách diễn đạt để phù hợp hơn với ngữ cảnh kinh doanh.
+•	Giải thích vì sao cần thay đổi cách diễn đạt và cảnh báo những điểm có thể gây hiểu nhầm.
+•	Cho phép người dùng luyện tập hội thoại trước khi làm việc với đối tác thật.
+ĐỊNH VỊ ĐỀ XUẤT
+Your AI-powered cross-cultural business communication partner.\nTrợ lý AI giúp doanh nghiệp Việt Nam giao tiếp chuyên nghiệp và phù hợp văn hóa khi làm việc với đối tác quốc tế.
+
+2. Mục tiêu và phạm vi MVP
+Trong 2–3 ngày, không nên cố xây dựng một nền tảng hoàn chỉnh. Mục tiêu là tạo ra một hành trình sử dụng liền mạch, có AI hoạt động thật và đủ thuyết phục khi trình diễn.
+Hạng mục	Phạm vi đề xuất
+Thị trường	Việt Nam → UAE và Việt Nam → Qatar
+Người dùng mục tiêu	Doanh nghiệp xuất khẩu vừa và nhỏ; nhân viên kinh doanh, quản lý bán hàng, chủ doanh nghiệp
+Ngôn ngữ	Người dùng nhập tiếng Việt; đầu ra chính bằng tiếng Anh. Có thể bổ sung tiếng Ả Rập ở mức giới hạn nếu đủ thời gian.
+Nền tảng	Responsive Web Application
+AI	LLM API kết hợp Cultural Knowledge Base được tuyển chọn
+Thời gian	2–3 ngày xây dựng MVP
+
+3. Trải nghiệm sản phẩm: 3 màn hình chính
+3.1. Màn hình 1 – Business Context
+Mục đích: thiết lập bối cảnh để các tính năng AI phía sau cùng sử dụng một bộ thông tin thống nhất.
+Trường thông tin	Giá trị ví dụ
+Your country	Vietnam
+Target country	UAE hoặc Qatar
+Business scenario	First-contact email / Product introduction / Quotation / Meeting / Negotiation
+Communication language	English; Arabic có thể là lựa chọn mở rộng
+Your role	Exporter / Sales Manager / Business Owner
+Partner role	Importer / Distributor / Business Partner
+
+Ví dụ luồng: người dùng chọn Vietnam → UAE, tình huống giới thiệu sản phẩm lần đầu, vai trò Sales Manager, ngôn ngữ English, sau đó nhấn “Start Communication”.
+Yêu cầu UX: quốc gia, tình huống và vai trò đã chọn phải được giữ xuyên suốt Email Assistant và Negotiation Simulator; tránh để mỗi tính năng hoạt động như một công cụ tách biệt.
+3.2. Màn hình 2 – AI Business Email Assistant
+Đây là tính năng ưu tiên số 1 và là phần cần đầu tư nhiều nhất trong MVP. Giao diện nên chia thành ba khu vực:
+•	Original Message: người dùng nhập email hoặc tin nhắn bằng tiếng Việt.
+•	AI Improved Message: hệ thống tạo email tiếng Anh có cấu trúc chuyên nghiệp, gồm tiêu đề, lời chào, nội dung và lời kết.
+•	Cultural Intelligence: hệ thống giải thích phong cách giao tiếp, mức độ trang trọng, cách xây dựng quan hệ, điểm cần tránh và lý do AI đã thay đổi câu chữ.
+Ví dụ nội dung đầu vào
+“Xin chào, chúng tôi là công ty ABC tại Việt Nam. Chúng tôi chuyên sản xuất cà phê và muốn hợp tác với công ty của bạn. Mong nhận được phản hồi sớm về giá cả và số lượng nhập hàng.”
+Ví dụ đầu ra mong muốn
+Subject: Exploring a Potential Business Partnership
+Dear [Partner’s Name],
+I hope this message finds you well.
+We are ABC Company, a Vietnam-based coffee manufacturer specializing in high-quality coffee products.
+We would be delighted to explore potential business opportunities with your esteemed company in the UAE.
+We would appreciate the opportunity to introduce our products and discuss how we might establish a mutually beneficial partnership.
+We look forward to hearing from you.
+Best regards,\nABC Company
+Đây là ví dụ minh họa. Cách diễn đạt thực tế cần tùy chỉnh theo người nhận, ngành hàng, quan hệ hiện tại và mục tiêu email.
+Các nhóm phân tích văn hóa cần hiển thị
+Nhóm phân tích	Nội dung hiển thị
+Communication Style	Mức độ trang trọng, lịch sự, trực tiếp hay gián tiếp; cách thể hiện thiện chí.
+Relationship Building	Cách mở đầu và thể hiện mong muốn xây dựng quan hệ hợp tác.
+What to Avoid	Câu chữ có thể tạo cảm giác thúc ép, thiếu lịch sự hoặc quá trực tiếp.
+Why AI Changed Your Email	Giải thích các thay đổi quan trọng và lý do liên quan đến ngữ cảnh.
+Alternative Phrases	Đề xuất câu thay thế và giải thích sự khác biệt về sắc thái.
+
+3.3. Màn hình 3 – International Negotiation Simulator
+Mục đích: cho người dùng thực hành một cuộc hội thoại mô phỏng với đối tác AI, qua đó thể hiện khả năng tương tác nhiều lượt của sản phẩm.
+Thiết lập mô phỏng:
+•	Target country: UAE hoặc Qatar.
+•	Partner role: Import Manager / Distributor / Business Partner.
+•	Business scenario: đàm phán xuất khẩu cà phê, trao đổi giá hoặc sản lượng.
+•	Difficulty: Beginner / Intermediate / Advanced.
+AI đóng vai đối tác, đặt câu hỏi và phản hồi theo vai trò đã chọn. Sau mỗi lượt trả lời của người dùng, hệ thống cung cấp:
+•	Đánh giá mức độ rõ ràng và chuyên nghiệp.
+•	Gợi ý cách diễn đạt tốt hơn.
+•	Giải thích yếu tố văn hóa hoặc giao tiếp có liên quan.
+•	Đề xuất một câu trả lời thay thế để người dùng tham khảo.
+LƯU Ý
+Simulator là môi trường luyện tập, không phải công cụ dự đoán chính xác hành vi của mọi đối tác. AI cần tránh khái quát hóa theo quốc tịch và phải cho phép khác biệt giữa cá nhân, ngành nghề và doanh nghiệp.
+
+4. Điểm khác biệt của sản phẩm
+Để tránh bị xem là một giao diện gọi ChatGPT API đơn thuần, CultureBridge AI cần thể hiện quy trình xử lý có cấu trúc gồm ba lớp:
+Lớp xử lý	Vai trò	Ví dụ
+1. Business Intent Understanding	Xác định mục đích giao tiếp và tình huống kinh doanh.	Giới thiệu sản phẩm, hỏi giá, gửi báo giá, nhắc phản hồi, từ chối đề nghị.
+2. Cultural Context Engine	Lấy ra tri thức văn hóa liên quan đến quốc gia, tình huống và vai trò.	Nguyên tắc về lời chào, mức độ trang trọng, xây dựng quan hệ, cách đưa ra đề nghị.
+3. AI Communication Generator	Tạo nội dung mới, phân tích thay đổi và cảnh báo rủi ro giao tiếp.	Email hoàn chỉnh, giải thích, câu thay thế và cảnh báo.
+
+Điểm tạo khác biệt phải đến từ tri thức văn hóa được tuyển chọn, cách gắn tri thức đó với tình huống cụ thể và khả năng giải thích đầu ra – không chỉ từ việc sử dụng một mô hình AI.
+5. Thiết kế đầu ra AI
+Nên yêu cầu backend trả về JSON có cấu trúc để frontend dễ hiển thị, kiểm thử và xử lý lỗi. Ví dụ schema minh họa:
+{
+  "improved_email": {
+    "subject": "...",
+    "body": "..."
+  },
+  "cultural_analysis": [
+    {
+      "aspect": "Communication Style",
+      "explanation": "...",
+      "reason": "..."
+    }
+  ],
+  "risk_warnings": [
+    {
+      "severity": "medium",
+      "message": "...",
+      "suggestion": "..."
+    }
+  ],
+  "alternative_phrases": [
+    {
+      "original": "...",
+      "improved": "...",
+      "reason": "..."
+    }
+  ]
+}
+Frontend hiển thị từng trường thành component riêng. Backend cần kiểm tra JSON, xử lý trường bị thiếu và có thông báo lỗi thân thiện khi API không trả về đúng định dạng.
+6. Kiến trúc kỹ thuật đề xuất
+Thành phần	Công nghệ gợi ý	Trách nhiệm
+Frontend	React + Vite + TypeScript	Giao diện, quản lý trạng thái, form nhập liệu, hiển thị kết quả và chat.
+UI	Tailwind CSS + shadcn/ui	Xây dựng giao diện nhanh, nhất quán và responsive.
+Backend	Laravel hoặc Express.js	API, xác thực dữ liệu đầu vào, quản lý prompt và điều phối yêu cầu AI.
+LLM API	Một nhà cung cấp mô hình ngôn ngữ phù hợp	Sinh email, phân tích văn hóa và mô phỏng hội thoại.
+Database	Supabase / PostgreSQL	Lưu hồ sơ quốc gia, tình huống, lịch sử mô phỏng nếu cần.
+Knowledge Base	JSON hoặc tài liệu biên soạn có cấu trúc	Lưu tri thức văn hóa đã được tuyển chọn và kiểm chứng.
+Deployment	Vercel + Render hoặc nền tảng tương đương	Đưa frontend và backend lên môi trường demo.
+
+Không cần triển khai RAG phức tạp trong MVP. Có thể bắt đầu bằng bộ dữ liệu JSON hoặc tài liệu ngắn được biên soạn trước, sau đó đưa các mục liên quan vào prompt theo quốc gia và tình huống đã chọn.
+Ví dụ cấu trúc dữ liệu văn hóa
+{
+  "country": "UAE",
+  "business_context": "first_contact",
+  "language": "English",
+  "communication_style": [
+    "professional",
+    "polite",
+    "relationship-oriented"
+  ],
+  "recommendations": [
+    "Use respectful greetings",
+    "Build rapport before discussing details"
+  ],
+  "things_to_avoid": [
+    "Overly aggressive language",
+    "Unreasonable response pressure"
+  ]
+}
+Đây là cấu trúc dữ liệu minh họa, không phải bộ quy tắc văn hóa đã được xác thực. Nội dung triển khai phải có nguồn tham khảo, ngày cập nhật và người kiểm chứng phù hợp.
+7. Kế hoạch triển khai trong 3 ngày
+Ngày 1 – Xây dựng nền tảng
+Mục tiêu: website hoạt động và có luồng AI đầu tiên.
+•	Thiết kế giao diện tổng quan và điều hướng.
+•	Xây dựng màn hình Business Context.
+•	Xây dựng màn hình Email Assistant.
+•	Tích hợp LLM API.
+•	Xử lý đầu vào tiếng Việt và tạo email tiếng Anh.
+•	Trả về Cultural Analysis ở mức cơ bản.
+Ngày 2 – Hoàn thiện năng lực AI
+Mục tiêu: thể hiện rõ khác biệt về tri thức văn hóa và tương tác.
+•	Hoàn thiện dữ liệu văn hóa cho UAE và Qatar.
+•	Xây dựng Cultural Context Engine.
+•	Bổ sung Risk Warning và Alternative Phrases.
+•	Xây dựng giao diện Negotiation Simulator.
+•	Tích hợp hội thoại AI nhiều lượt.
+•	Bổ sung đánh giá và gợi ý sau mỗi câu trả lời.
+Ngày 3 – Kiểm thử và chuẩn bị trình diễn
+Mục tiêu: demo ổn định, có kịch bản rõ ràng.
+•	Hoàn thiện responsive UI và trạng thái loading/error.
+•	Kiểm tra lỗi API, giới hạn thời gian và dữ liệu đầu vào.
+•	Chuẩn bị sẵn dữ liệu demo.
+•	Kiểm thử ít nhất 5 tình huống kinh doanh.
+•	Chuẩn bị kịch bản thuyết trình và phân công người trình bày.
+•	Deploy website và kiểm tra trên thiết bị trình diễn.
+•	Chuẩn bị video hoặc ảnh chụp dự phòng khi mạng/API gặp sự cố.
+8. Những tính năng nên để ngoài MVP
+Tính năng	Quyết định	Lý do
+Country Business Intelligence Dashboard	Để giai đoạn sau	Tốn thời gian tổng hợp dữ liệu; không phải luồng demo cốt lõi.
+B2B API	Để giai đoạn sau	Chưa cần chứng minh tích hợp thương mại trong MVP.
+Thanh toán và subscription	Để giai đoạn sau	Không giúp chứng minh giá trị cốt lõi ở vòng Hackathon.
+Quản lý doanh nghiệp và nhân viên	Để giai đoạn sau	Làm tăng phạm vi backend và kiểm thử.
+Dịch thuật đa ngôn ngữ nâng cao	Để giai đoạn sau	Ưu tiên Việt–Anh và hai thị trường thử nghiệm.
+Voice conversation	Để giai đoạn sau	Có thể phát sinh vấn đề về thời gian, độ trễ và xử lý âm thanh.
+Email Assistant	Bắt buộc	Luồng giá trị chính và dễ trình diễn.
+Cultural Analysis	Bắt buộc	Điểm khác biệt quan trọng của sản phẩm.
+Negotiation Simulator	Nên có	Tạo tương tác trực tiếp và tăng sức hấp dẫn khi demo.
+
+9. Kịch bản thuyết trình Hackathon
+Nên trình diễn bằng một câu chuyện kinh doanh cụ thể thay vì giới thiệu danh sách tính năng.
+Phần	Thời lượng gợi ý	Nội dung
+1. Đặt vấn đề	20 giây	Một doanh nghiệp Việt Nam muốn xuất khẩu cà phê sang UAE. Họ có sản phẩm tốt nhưng chưa tự tin về cách giao tiếp và xây dựng quan hệ với đối tác.
+2. Email Assistant	45 giây	Chọn UAE, nhập email tiếng Việt, tạo email tiếng Anh và mở phần phân tích văn hóa. Chỉ ra một vài thay đổi quan trọng.
+3. Negotiation Simulator	45 giây	Bắt đầu hội thoại với AI Import Manager, trả lời một câu hỏi và xem đánh giá/gợi ý.
+4. Kết luận	20 giây	CultureBridge AI không chỉ giúp doanh nghiệp nói đúng ngôn ngữ; sản phẩm giúp họ hiểu ngữ cảnh, giao tiếp phù hợp và tự tin hơn khi tiếp cận thị trường quốc tế.
+
+THÔNG ĐIỆP KẾT THÚC
+CultureBridge AI không chỉ dịch lời nói. Chúng tôi giúp doanh nghiệp hiểu đúng ngữ cảnh, giao tiếp phù hợp văn hóa và chuẩn bị tốt hơn cho những cơ hội kinh doanh quốc tế.
+
+10. Các yếu tố cần chứng minh với ban giám khảo
+Tiêu chí	Bằng chứng nên trình bày
+Problem	Vấn đề thực tế, nhóm khách hàng cụ thể và một tình huống kinh doanh dễ hình dung.
+Innovation	AI kết hợp Business Intent, Cultural Context và giải thích thay đổi; không chỉ dịch thuật.
+Technical	API AI hoạt động thật, đầu ra có cấu trúc, hội thoại nhiều lượt và dữ liệu tri thức riêng.
+Feasibility	MVP chạy được, phạm vi nhỏ, kiến trúc có thể mở rộng và kế hoạch phát triển rõ ràng.
+Impact	Giúp doanh nghiệp chuẩn bị giao tiếp tốt hơn, hạn chế hiểu nhầm và nâng cao sự tự tin khi tiếp cận thị trường.
+
+11. Kiểm thử chất lượng và độ tin cậy
+Nên chuẩn bị bộ kiểm thử gồm 5–10 tình huống, được người có kiến thức ngôn ngữ/văn hóa hoặc người có kinh nghiệm kinh doanh quốc tế rà soát.
+•	Giới thiệu sản phẩm lần đầu.
+•	Gửi báo giá.
+•	Nhắc đối tác phản hồi.
+•	Từ chối một đề nghị hợp tác.
+•	Đàm phán về giá và số lượng.
+•	Đề nghị sắp xếp cuộc họp.
+•	Phản hồi khi đối tác yêu cầu thay đổi điều khoản.
+Với mỗi tình huống, kiểm tra: nội dung có đúng mục đích không; giọng điệu có phù hợp không; giải thích văn hóa có căn cứ không; cảnh báo có hữu ích không; AI có bịa ra quy tắc hoặc khẳng định quá mức không.
+Nên lưu nguồn tham khảo cho từng nhóm khuyến nghị văn hóa, ghi ngày cập nhật và phân biệt rõ thông tin phổ biến với gợi ý mang tính tham khảo. Không trình bày đặc điểm văn hóa như quy luật áp dụng cho tất cả cá nhân trong một quốc gia.
+12. Rủi ro và phương án giảm thiểu
+Rủi ro	Tác động	Cách giảm thiểu
+AI tạo thông tin văn hóa thiếu căn cứ	Làm giảm độ tin cậy và có thể khiến người dùng giao tiếp sai.	Dùng knowledge base có nguồn; yêu cầu AI nêu mức độ chắc chắn; không khẳng định tuyệt đối; có người kiểm chứng.
+Sản phẩm giống chatbot thông thường	Khó chứng minh tính đổi mới.	Thể hiện rõ bối cảnh kinh doanh, tri thức văn hóa, giải thích thay đổi, cảnh báo và đánh giá theo tình huống.
+Phạm vi phát triển quá rộng	Không hoàn thành luồng demo cốt lõi.	Giới hạn hai thị trường và ba chức năng; hoãn các tính năng phụ.
+API hoặc Internet không ổn định	Demo có thể bị gián đoạn.	Chuẩn bị dữ liệu mẫu, video dự phòng và trạng thái lỗi thân thiện.
+Đầu ra AI không đúng định dạng	Frontend hiển thị lỗi.	Dùng schema JSON, validate ở backend và có cơ chế retry/fallback.
+
+13. Phân công công việc gợi ý
+Vai trò	Trách nhiệm
+Phụ trách ngôn ngữ và văn hóa	Biên soạn, kiểm chứng tri thức UAE/Qatar; chuẩn bị tình huống; đánh giá chất lượng email và phản hồi AI.
+Phụ trách frontend	Thiết kế và xây dựng ba màn hình; quản lý trạng thái; tích hợp API; tối ưu trải nghiệm demo.
+Phụ trách backend/AI	Thiết kế API; tích hợp LLM; xây dựng prompt; nạp knowledge base; xử lý JSON và hội thoại nhiều lượt.
+Cả đội	Kiểm thử kịch bản, hoàn thiện nội dung thuyết trình, kiểm tra sản phẩm và chuẩn bị phương án dự phòng.
+
+14. Hướng phát triển sau Hackathon
+•	Mở rộng quốc gia: Nhật Bản, Hàn Quốc và các thị trường khác.
+•	Bổ sung ngôn ngữ đầu ra: tiếng Ả Rập và các ngôn ngữ mục tiêu.
+•	Country Business Intelligence: hồ sơ thị trường, phong tục, quy tắc giao tiếp và thông tin kinh doanh.
+•	Tài khoản doanh nghiệp, quản lý nhóm và thư viện mẫu giao tiếp.
+•	Gói thuê bao cho cá nhân và doanh nghiệp vừa và nhỏ.
+•	Dịch vụ tư vấn/đào tạo giao tiếp liên văn hóa.
+•	B2B API cho nền tảng thương mại quốc tế.
+15. Checklist trước ngày thi
+•	Website có thể truy cập từ thiết bị trình diễn.
+•	Luồng chọn quốc gia và tình huống hoạt động.
+•	Email Assistant trả kết quả thật từ AI.
+•	Cultural Analysis có giải thích cụ thể và căn cứ.
+•	Negotiation Simulator duy trì được hội thoại nhiều lượt.
+•	Có ít nhất 5 tình huống đã được kiểm thử.
+•	Có dữ liệu demo sẵn để tránh nhập liệu mất thời gian.
+•	Có video/ảnh dự phòng khi API hoặc Internet gặp sự cố.
+•	Đội ngũ thống nhất thông điệp và phân công thuyết trình.
+16. Kết luận và khuyến nghị
+Phiên bản nên mang đi thi là một web application nhỏ nhưng hoàn chỉnh hành trình: nhập email → hiểu bối cảnh văn hóa → cải thiện giao tiếp → thực hành đàm phán. Không cần nhiều tính năng; cần một luồng sử dụng chạy ổn định, đầu ra AI có chất lượng và bằng chứng cho thấy tri thức văn hóa tạo ra giá trị thực.
+ƯU TIÊN CUỐI CÙNG
+1) AI Business Email Assistant\n2) Cultural Intelligence & Risk Checker\n3) International Negotiation Simulator\n\nNếu thời gian bị thiếu, hãy hoàn thiện thật tốt hai chức năng đầu trước, sau đó mới bổ sung mô phỏng đàm phán.
+

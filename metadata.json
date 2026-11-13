@@ -1,0 +1,8 @@
+{
+  "name": "CultureBridge AI",
+  "description": "AI Cultural Business Copilot helping Vietnamese enterprises communicate and negotiate effectively with UAE and Qatar business partners.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
