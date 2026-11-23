@@ -2,15 +2,18 @@ import { useState } from 'react';
 import {
   AlertTriangle,
   ArrowRight,
-  BookCheck,
   Check,
+  CheckCircle2,
   Copy,
-  Layers,
+  ExternalLink,
+  Info,
   Loader2,
   MessageSquare,
-  RotateCcw,
+  PenLine,
+  RefreshCw,
   Send,
   ShieldAlert,
+  Sparkles,
 } from 'lucide-react';
 import {
   DEMO_SCENARIO_PRESETS,
@@ -22,6 +25,8 @@ import type {
   EmailAnalysisResponse,
 } from '../types/culturebridge.ts';
 import { CountryFlag } from './CountryFlag.tsx';
+import { Button } from './ui/Button.tsx';
+import { useI18n } from '../i18n/index.tsx';
 
 interface EmailAssistantScreenProps {
   context: BusinessContext;
@@ -48,6 +53,9 @@ export function EmailAssistantScreen({
   onEditContext,
   onGoToSimulator,
 }: EmailAssistantScreenProps) {
+  const { locale } = useI18n();
+  const isVi = locale === 'vi';
+  const isAr = locale === 'ar';
   const [copied, setCopied] = useState(false);
 
   const scenarioLabel =
@@ -61,116 +69,132 @@ export function EmailAssistantScreen({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback ignored if clipboard blocked
+      // Fallback
     }
   };
 
-  const severityStyle = (severity: 'low' | 'medium' | 'high') => {
-    if (severity === 'high') {
-      return {
-        label: 'High Risk',
-        text: 'text-red-700',
-        bg: 'bg-red-50',
-        border: 'border-red-200',
-      };
+  const severityBadge = (level: 'low' | 'medium' | 'high') => {
+    if (level === 'high') {
+      return (
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10.5px] font-semibold bg-destructive/15 text-destructive border border-destructive/30">
+          <AlertTriangle className="w-3 h-3" />
+          {isVi ? 'Rủi ro cao' : isAr ? 'مخاطرة عالية' : 'High Risk'}
+        </span>
+      );
     }
-    if (severity === 'medium') {
-      return {
-        label: 'Medium Caution',
-        text: 'text-amber-800',
-        bg: 'bg-amber-50',
-        border: 'border-amber-200',
-      };
+    if (level === 'medium') {
+      return (
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10.5px] font-semibold bg-accent/15 text-accent border border-accent/30">
+          <Info className="w-3 h-3" />
+          {isVi ? 'Cần chú ý' : isAr ? 'تنبيه متوسط' : 'Caution'}
+        </span>
+      );
     }
-    return {
-      label: 'Advisory Note',
-      text: 'text-indigo-700',
-      bg: 'bg-indigo-50',
-      border: 'border-indigo-200',
-    };
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10.5px] font-medium bg-muted text-muted-foreground border border-border">
+        {isVi ? 'Khuyến nghị' : isAr ? 'ملاحظة' : 'Advisory'}
+      </span>
+    );
   };
 
   return (
     <div className="space-y-6">
-      {/* Persistent Context Strip */}
-      <div className="bg-white border border-slate-200 rounded-xl px-5 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-          <div className="flex items-center gap-2 font-semibold text-slate-900">
-            <CountryFlag country="Vietnam" className="w-4 h-4" />
-            <span>Vietnam</span>
-            <span className="text-slate-400" aria-hidden="true">
-              →
-            </span>
-            <CountryFlag country={context.targetCountry} className="w-4 h-4" />
-            <span>{context.targetCountry}</span>
-          </div>
-          <span className="text-slate-300" aria-hidden="true">
-            ·
-          </span>
-          <span className="font-medium text-slate-700">{scenarioLabel}</span>
-          <span className="text-slate-300" aria-hidden="true">
-            ·
-          </span>
-          <span className="text-slate-600">
-            {context.yourRole} to {context.partnerRole}
-          </span>
-          <span className="text-slate-300" aria-hidden="true">
-            ·
-          </span>
-          <span className="text-slate-600">
-            {context.language === 'english_arabic'
-              ? 'English + Arabic Courtesy'
-              : 'Business English'}
-          </span>
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-border/60">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-accent">
+            {isVi ? 'Trợ lý ngoại giao thư tín · Việt Nam → Vùng Vịnh' : isAr ? 'مساعد صياغة المراسلات · فيتنام إلى الخليج' : 'Diplomatic Mail Assistant · Vietnam → GCC'}
+          </p>
+          <h1 className="mt-1 text-2xl sm:text-3xl font-bold font-display text-foreground tracking-tight">
+            {isVi ? 'Trợ lý Email Thương mại' : isAr ? 'مساعد البريد التجاري' : 'Export Email Assistant'}
+          </h1>
+          <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
+            {isVi
+              ? 'Chuyển hóa thư nháp tiếng Việt thô thành email ngoại giao chuẩn mực với đối tác UAE & Qatar.'
+              : isAr
+              ? 'تحويل المسودات المبدئية إلى مراسلات دبلوماسية رفيعة المستوى لشركاء الخليج.'
+              : 'Transform raw drafts into culturally nuanced correspondence for GCC business partners.'}
+          </p>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0">
-          <button
-            type="button"
-            onClick={onEditContext}
-            className="text-xs font-semibold text-[#4F46E5] hover:text-[#3525cd] underline underline-offset-4 whitespace-nowrap"
-          >
-            Edit Business Context
-          </button>
+        <button
+          type="button"
+          onClick={onEditContext}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-card text-xs font-semibold text-foreground hover:bg-secondary/60 transition-colors self-start sm:self-center"
+        >
+          <PenLine className="w-3.5 h-3.5 text-accent" />
+          <span>{isVi ? 'Đổi bối cảnh đối tác' : isAr ? 'تعديل سياق العمل' : 'Change Context'}</span>
+        </button>
+      </div>
+
+      {/* Persistent Context Strip */}
+      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 rounded-xl border border-border bg-card/70 text-xs">
+        <div className="flex flex-wrap items-center gap-2 font-medium">
+          <div className="flex items-center gap-1.5 text-foreground font-semibold">
+            <CountryFlag country="Vietnam" className="w-3.5 h-3.5" />
+            <span>Việt Nam</span>
+            <span className="text-muted-foreground/60">→</span>
+            <CountryFlag country={context.targetCountry} className="w-3.5 h-3.5" />
+            <span>{context.targetCountry}</span>
+          </div>
+          <span className="text-border">·</span>
+          <span className="text-foreground">{scenarioLabel}</span>
+          <span className="text-border">·</span>
+          <span className="text-muted-foreground">
+            {context.partnerName || `${context.targetCountry} ${context.partnerRole}`}
+          </span>
+          <span className="text-border">·</span>
+          <span className="text-accent font-medium">
+            {context.language === 'english_arabic' ? 'English + Arabic Courtesy' : 'Business English'}
+          </span>
         </div>
       </div>
 
-      {/* Main Split Workspace */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-        {/* Column 1: Original Message (Vietnamese Input) */}
-        <section
-          aria-labelledby="original-draft-heading"
-          className="xl:col-span-5 bg-white border border-slate-200 rounded-xl p-6 space-y-5"
-        >
-          <div className="flex items-start justify-between gap-3 pb-4 border-b border-slate-200">
-            <div>
-              <h2
-                id="original-draft-heading"
-                className="text-lg font-semibold text-slate-900"
-              >
-                Original Message
-              </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Write your draft naturally in Vietnamese (or English).
-              </p>
-            </div>
-            <span className="text-xs font-mono text-slate-500 tabular-nums whitespace-nowrap">
-              {draftText.length} / 4000
+      {/* Main Split Layout: Left Draft Panel + Right Polished Result */}
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] items-start">
+        {/* Left Column: Draft Editor (Sticky) */}
+        <div className="xl:sticky xl:top-24 rounded-xl border border-border bg-card p-5 space-y-4 shadow-xs">
+          <div className="flex items-center justify-between">
+            <label htmlFor="draft-textarea" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {isVi ? 'Bản nháp của bạn' : isAr ? 'مسودتك' : 'Your Draft'}
+            </label>
+            <span className="text-[11px] text-muted-foreground font-mono">
+              {draftText.length} {isVi ? 'ký tự' : isAr ? 'حرف' : 'chars'}
             </span>
           </div>
 
-          {/* Quick Sample Loaders */}
-          <div className="space-y-2">
-            <span className="block text-xs font-semibold text-slate-600">
-              Load Sample Vietnamese Draft
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {DEMO_SCENARIO_PRESETS.slice(0, 4).map((preset) => (
+          <textarea
+            id="draft-textarea"
+            value={draftText}
+            onChange={(e) => onChangeDraftText(e.target.value)}
+            rows={8}
+            placeholder={
+              isVi
+                ? 'Nhập nội dung thư thô bằng tiếng Việt hoặc tiếng Anh... (Ví dụ: Chào anh, chúng tôi muốn báo giá điều rang muối và hỏi anh có thể đặt cọc 50% trước không...)'
+                : isAr
+                ? 'اكتب مسودة الرسالة هنا...'
+                : 'Enter your draft in Vietnamese or English...'
+            }
+            className="w-full p-3 rounded-lg border border-border bg-background text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent resize-y"
+          />
+
+          {/* Quick Sample Presets */}
+          <div className="space-y-1.5">
+            <p className="text-[10.5px] font-semibold text-muted-foreground">
+              {isVi ? 'Mẫu thư nhanh để thử:' : isAr ? 'مسودات تجريبية سريعة:' : 'Quick Sample Drafts:'}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {DEMO_SCENARIO_PRESETS.filter(
+                (p) => p.targetCountry === context.targetCountry
+              ).map((preset) => (
                 <button
                   key={preset.id}
                   type="button"
-                  onClick={() => onApplyPreset(preset, true)}
-                  className="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200/80 rounded-md transition-colors whitespace-nowrap"
+                  onClick={() => {
+                    onApplyPreset(preset, false);
+                    onChangeDraftText(preset.vietnameseDraft);
+                  }}
+                  className="px-2 py-1 rounded-md text-[11px] border border-border bg-secondary/50 text-foreground hover:border-accent/40 hover:bg-secondary transition-colors"
                 >
                   {preset.shortLabel}
                 </button>
@@ -178,397 +202,238 @@ export function EmailAssistantScreen({
             </div>
           </div>
 
-          <div>
-            <label
-              htmlFor="vietnamese-draft-textarea"
-              className="block text-xs font-semibold text-slate-700 mb-2"
-            >
-              Vietnamese Draft Content
-            </label>
-            <textarea
-              id="vietnamese-draft-textarea"
-              rows={9}
-              value={draftText}
-              onChange={(e) => onChangeDraftText(e.target.value)}
-              placeholder="Ví dụ: Xin chào, chúng tôi là công ty ABC tại Việt Nam. Chúng tôi chuyên sản xuất cà phê và muốn hợp tác với công ty của bạn..."
-              className="w-full p-3.5 rounded-lg border border-slate-200 bg-white text-sm text-slate-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5] resize-y"
-            />
-          </div>
-
+          {/* Error Message */}
           {errorMessage && (
-            <div
-              role="alert"
-              className="p-3.5 rounded-lg border border-red-200 bg-red-50 text-xs text-red-800 flex items-start gap-2.5"
-            >
-              <AlertTriangle
-                className="w-4 h-4 text-red-600 shrink-0 mt-0.5"
-                aria-hidden="true"
-              />
+            <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/25 text-xs text-destructive flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{errorMessage}</span>
             </div>
           )}
 
-          <div className="flex items-center justify-between gap-3 pt-1">
-            <button
-              type="button"
-              onClick={() => onChangeDraftText('')}
-              disabled={isLoading || !draftText}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-            >
-              <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Clear</span>
-            </button>
+          {/* Analyze / Generate Button */}
+          <Button
+            type="button"
+            variant="accent"
+            size="lg"
+            onClick={onAnalyze}
+            disabled={isLoading || draftText.trim().length < 8}
+            className="w-full gap-2 shadow-xs"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>{isVi ? 'Đang phân tích văn hóa...' : isAr ? 'جاري التحليل والمواءمة...' : 'Polishing Email...'}</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4" />
+                <span>{isVi ? 'Tinh chỉnh văn phong ngoại giao' : isAr ? 'صياغة البريد الدبلوماسي' : 'Polish & Align Email'}</span>
+              </>
+            )}
+          </Button>
+        </div>
 
-            <button
-              type="button"
-              onClick={onAnalyze}
-              disabled={isLoading}
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#4F46E5] hover:bg-[#4338CA] rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
-                  <span>Analyzing Context...</span>
-                </>
-              ) : (
-                <>
-                  <Send className="w-4 h-4" aria-hidden="true" />
-                  <span>Transform & Analyze Email</span>
-                </>
-              )}
-            </button>
-          </div>
-        </section>
-
-        {/* Column 2 & 3: AI Improved Email + Cultural Intelligence */}
-        <div className="xl:col-span-7 space-y-6">
-          {isLoading ? (
-            <div
-              aria-busy="true"
-              aria-label="Generating culturally adapted email and analysis"
-              className="bg-white border border-slate-200 rounded-xl p-6 space-y-5"
-            >
-              <div className="flex items-center gap-3 text-sm font-semibold text-[#4F46E5]">
-                <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
-                <span>
-                  Running 3-Layer Cultural Pipeline (Intent → {context.targetCountry}{' '}
-                  Knowledge Base → Email Adaptation)...
-                </span>
+        {/* Right Column: Result & Cultural Audit */}
+        <div className="space-y-5">
+          {!analysis && !isLoading && (
+            <div className="rounded-xl border border-dashed border-border bg-card/50 p-8 sm:p-12 text-center space-y-3">
+              <div className="w-12 h-12 rounded-full bg-accent/10 text-accent grid place-items-center mx-auto">
+                <Sparkles className="w-6 h-6" />
               </div>
-              <div className="space-y-3 animate-pulse">
-                <div className="h-5 bg-slate-100 rounded w-2/3" />
-                <div className="h-4 bg-slate-100 rounded w-full" />
-                <div className="h-4 bg-slate-100 rounded w-11/12" />
-                <div className="h-4 bg-slate-100 rounded w-4/5" />
-                <div className="h-24 bg-slate-100 rounded w-full mt-4" />
-              </div>
+              <h3 className="text-base font-semibold font-display text-foreground">
+                {isVi ? 'Sẵn sàng tinh chỉnh thư tín của bạn' : isAr ? 'جاهز لتحسين مسودتك التجارية' : 'Ready to Polish Your Email'}
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+                {isVi
+                  ? 'Bấm nút "Tinh chỉnh văn phong ngoại giao" bên trái. Bridgely sẽ cấu trúc lại lời chào, làm dịu yêu cầu thương mại và kiểm tra nghi thức giao thương vùng Vịnh.'
+                  : isAr
+                  ? 'انقر على الزر على اليسار لصياغة رسالة متوافقة مع الأعراف التجارية الخليجية.'
+                  : 'Click the button on the left. Bridgely will rewrite greetings, soften commercial demands, and protect face.'}
+              </p>
             </div>
-          ) : !analysis ? (
-            <div className="bg-white border border-slate-200 rounded-xl p-8 space-y-5">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#4F46E5]">
-                  <Layers className="w-4 h-4" aria-hidden="true" />
-                  <span>3-Layer Cultural Processing Architecture</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900">
-                  Ready to transform your Vietnamese draft
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed max-w-xl">
-                  Click <strong>Transform & Analyze Email</strong> on the left to
-                  run your message through our structured cross-cultural pipeline:
-                </p>
-              </div>
+          )}
 
-              <ol className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-200">
-                <li className="space-y-1">
-                  <div className="text-xs font-semibold text-slate-900">
-                    1. Business Intent
-                  </div>
-                  <p className="text-xs text-slate-600">
-                    Detects commercial goal, urgency cues, and directness risks.
-                  </p>
-                </li>
-                <li className="space-y-1">
-                  <div className="text-xs font-semibold text-slate-900">
-                    2. Cultural Context Engine
-                  </div>
-                  <p className="text-xs text-slate-600">
-                    Retrieves verified {context.targetCountry} protocol for{' '}
-                    {scenarioLabel}.
-                  </p>
-                </li>
-                <li className="space-y-1">
-                  <div className="text-xs font-semibold text-slate-900">
-                    3. AI Generator & Coach
-                  </div>
-                  <p className="text-xs text-slate-600">
-                    Crafts adapted English copy plus clear cultural rationale.
-                  </p>
-                </li>
-              </ol>
+          {isLoading && !analysis && (
+            <div className="rounded-xl border border-border bg-card p-12 text-center space-y-4 shadow-xs">
+              <Loader2 className="w-8 h-8 animate-spin text-accent mx-auto" />
+              <p className="text-sm font-semibold text-foreground">
+                {isVi ? 'Đang rà soát quy tắc ngoại giao thương mại GCC...' : isAr ? 'جاري تدقيق بروتوكول الأعمال الخليجي...' : 'Auditing against GCC trade etiquette...'}
+              </p>
+              <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                {isVi
+                  ? 'Kiểm tra mức độ trang trọng, lời chào hỏi thăm gia quyến, thiện chí hợp tác lâu dài và chuẩn bị bản dịch tiếng Ả Rập chuẩn xác.'
+                  : isAr
+                  ? 'التحقق من نبرة الاحترام وبناء الثقة...'
+                  : 'Checking tone, personal rapport, indirect phrasing, and courteous Arabic touches.'}
+              </p>
             </div>
-          ) : (
+          )}
+
+          {analysis && (
             <>
-              {/* 3-Layer Pipeline Trace */}
-              <section
-                aria-label="3-layer processing trace"
-                className="bg-white border border-slate-200 rounded-xl p-5"
-              >
-                <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 pb-3 border-b border-slate-200">
-                  <Layers className="w-4 h-4 text-[#4F46E5]" aria-hidden="true" />
-                  <span>3-Layer Cultural Processing Trace</span>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 text-xs">
+              {/* Card 1: Polished Email */}
+              <div className="rounded-xl border border-border bg-card overflow-hidden shadow-xs">
+                {/* Email Header */}
+                <div className="px-5 py-4 bg-muted/40 border-b border-border flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <div className="font-semibold text-slate-900">
-                      1. Intent Detected
-                    </div>
-                    <div className="text-slate-600 mt-1">
-                      {analysis.pipeline.intent.primaryIntent}
-                    </div>
-                    <div className="text-slate-500 mt-1">
-                      {analysis.pipeline.intent.detectedSignals[0]}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-slate-900">
-                      2. Cultural Engine Match
-                    </div>
-                    <div className="text-slate-600 mt-1">
-                      {analysis.pipeline.knowledgeEntry.country} ·{' '}
-                      {analysis.pipeline.knowledgeEntry.scenarioLabel}
-                    </div>
-                    <div className="text-slate-500 mt-1">
-                      Ref: {analysis.pipeline.knowledgeEntry.id}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-slate-900">
-                      3. Output Tailored
-                    </div>
-                    <div className="text-slate-600 mt-1">
-                      {context.yourRole} → {context.partnerRole}
-                    </div>
-                    <div className="text-slate-500 mt-1">
-                      {analysis.risk_warnings.length} risks checked ·{' '}
-                      {analysis.alternative_phrases.length} phrase upgrades
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Area 2: AI Improved Message */}
-              <section
-                aria-labelledby="improved-email-heading"
-                className="bg-white border border-slate-200 rounded-xl p-6 space-y-5"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-slate-200">
-                  <div>
-                    <h2
-                      id="improved-email-heading"
-                      className="text-lg font-semibold text-slate-900"
-                    >
-                      AI Improved Message
-                    </h2>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Culturally adapted Business English for {context.targetCountry}{' '}
-                      ({context.partnerRole})
-                    </p>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-accent">
+                      {isVi ? 'Thư hoàn chỉnh · Sẵn sàng gửi' : isAr ? 'الرسالة المكتملة · جاهزة للإرسال' : 'Polished Draft · Ready to Send'}
+                    </span>
+                    <h3 className="text-sm font-bold text-foreground mt-0.5">
+                      {analysis.improved_email.subject}
+                    </h3>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button
+                  <div className="flex items-center gap-2">
+                    <Button
                       type="button"
+                      variant="outline"
+                      size="sm"
                       onClick={handleCopyEmail}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors whitespace-nowrap"
+                      className="gap-1.5 text-xs"
                     >
                       {copied ? (
                         <>
-                          <Check className="w-3.5 h-3.5 text-emerald-600" aria-hidden="true" />
-                          <span>Copied</span>
+                          <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          <span className="text-emerald-600 font-semibold">{isVi ? 'Đã sao chép' : isAr ? 'تم النسخ' : 'Copied!'}</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-3.5 h-3.5" aria-hidden="true" />
-                          <span>Copy Email</span>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>{isVi ? 'Sao chép thư' : isAr ? 'نسخ الرسالة' : 'Copy Email'}</span>
                         </>
                       )}
-                    </button>
+                    </Button>
 
-                    <button
+                    <Button
                       type="button"
+                      variant="accent"
+                      size="sm"
                       onClick={onGoToSimulator}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#0F172A] hover:bg-slate-800 rounded-lg transition-colors whitespace-nowrap"
+                      className="gap-1.5 text-xs"
                     >
-                      <MessageSquare className="w-3.5 h-3.5" aria-hidden="true" />
-                      <span>Practice in Simulator</span>
-                      <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
-                    </button>
+                      <span>{isVi ? 'Luyện tập đàm phán' : isAr ? 'ممارسة التفاوض' : 'Practice in Simulator'}</span>
+                      <ArrowRight className="w-3.5 h-3.5 rtl-flip" />
+                    </Button>
                   </div>
                 </div>
 
-                {/* Email Structure */}
-                <div className="space-y-4">
-                  <div className="pb-3 border-b border-slate-200">
-                    <span className="text-xs font-semibold text-slate-500">
-                      Subject
-                    </span>
-                    <div className="text-base font-semibold text-slate-900 mt-1">
-                      {analysis.improved_email.subject}
-                    </div>
+                {/* Email Content */}
+                <div className="p-5 sm:p-6 space-y-4 text-xs sm:text-sm font-sans leading-relaxed text-foreground/90">
+                  <div className="font-semibold text-foreground">
+                    {analysis.improved_email.greeting}
                   </div>
-
-                  <div className="space-y-3 text-sm text-slate-800 leading-relaxed whitespace-pre-line">
-                    <p className="font-medium text-slate-900">
-                      {analysis.improved_email.greeting}
-                    </p>
-                    <p>{analysis.improved_email.body}</p>
-                    <p className="font-medium text-slate-900 pt-1">
-                      {analysis.improved_email.closing}
-                    </p>
+                  <div className="whitespace-pre-line text-foreground/90">
+                    {analysis.improved_email.body}
                   </div>
-
+                  <div className="pt-2 font-medium text-foreground whitespace-pre-line border-t border-border/50">
+                    {analysis.improved_email.closing}
+                  </div>
                   {analysis.improved_email.arabic_courtesy_note && (
-                    <div className="pt-4 border-t border-slate-200 bg-slate-50/80 rounded-lg p-4 space-y-1">
-                      <div className="text-xs font-semibold text-[#4F46E5]">
-                        Optional Arabic Courtesy Touch
-                      </div>
-                      <p className="text-sm text-slate-800">
-                        {analysis.improved_email.arabic_courtesy_note}
-                      </p>
+                    <div className="mt-3 p-3 rounded-lg bg-accent/5 border border-accent/20 text-xs text-foreground/80 flex items-start gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" />
+                      <span>{analysis.improved_email.arabic_courtesy_note}</span>
                     </div>
                   )}
                 </div>
-              </section>
+              </div>
 
-              {/* Area 3: Cultural Intelligence & Risk Analysis */}
-              <section
-                aria-labelledby="cultural-intel-heading"
-                className="bg-white border border-slate-200 rounded-xl p-6 space-y-6"
-              >
-                <div className="pb-4 border-b border-slate-200">
-                  <h2
-                    id="cultural-intel-heading"
-                    className="text-lg font-semibold text-slate-900"
-                  >
-                    Cultural Intelligence & Risk Analysis
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Transparent breakdown of tone, relationship cues, cautions, and
-                    phrasing changes.
-                  </p>
+              {/* Card 2: Cultural Audit & Transformation */}
+              <div className="rounded-xl border border-border bg-card p-5 space-y-4 shadow-xs">
+                <div className="flex items-center justify-between border-b border-border pb-3">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-accent" />
+                    <span>{isVi ? 'Đánh giá Văn hóa & Rủi ro thương mại' : isAr ? 'تدقيق الحساسية الثقافية والمخاطر' : 'Cultural Audit & Nuance'}</span>
+                  </h3>
+                  <span className="text-[11px] font-semibold text-accent bg-accent/10 px-2.5 py-0.5 rounded-full">
+                    {analysis.risk_warnings.length} {isVi ? 'điểm lưu ý' : isAr ? 'ملاحظات' : 'alerts'}
+                  </span>
                 </div>
 
-                {/* 4 Core Cultural Analysis Aspects */}
-                <div className="divide-y divide-slate-200">
-                  {analysis.cultural_analysis.map((item, idx) => (
-                    <div key={idx} className="py-4 first:pt-0 last:pb-0 space-y-1.5">
-                      <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <h3 className="text-sm font-semibold text-slate-900">
-                          {item.aspect}
-                        </h3>
-                        <span className="text-xs font-medium text-[#4F46E5]">
-                          {item.summary}
-                        </span>
-                      </div>
-                      <p className="text-sm text-slate-700 leading-relaxed">
-                        {item.explanation}
-                      </p>
-                      <p className="text-xs text-slate-500 leading-relaxed">
-                        <strong className="font-semibold text-slate-600">
-                          Why it matters:{' '}
-                        </strong>
-                        {item.reason}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Risk Warnings */}
+                {/* Cultural Risks List */}
                 {analysis.risk_warnings.length > 0 && (
-                  <div className="pt-5 border-t border-slate-200 space-y-3">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-                      <ShieldAlert
-                        className="w-4 h-4 text-amber-600"
-                        aria-hidden="true"
-                      />
-                      <span>Communication Risk Warnings</span>
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                      {isVi ? 'Phân tích điểm chạm nhạy cảm:' : isAr ? 'نقاط الحذر الثقافي:' : 'Cultural Risk Warnings:'}
+                    </p>
+                    <div className="grid gap-2">
+                      {analysis.risk_warnings.map((risk, idx) => (
+                        <div
+                          key={idx}
+                          className="p-3 rounded-lg border border-border/70 bg-card text-xs space-y-1"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="font-semibold text-foreground">
+                              {risk.title}
+                            </span>
+                            {severityBadge(risk.severity)}
+                          </div>
+                          <p className="text-muted-foreground leading-relaxed">
+                            {risk.message}
+                          </p>
+                          <p className="text-accent font-medium pt-0.5">
+                            {risk.suggestion}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                    <div className="space-y-3">
-                      {analysis.risk_warnings.map((risk, idx) => {
-                        const style = severityStyle(risk.severity);
-                        return (
-                          <div
-                            key={idx}
-                            className={`p-4 rounded-lg border ${style.border} ${style.bg} space-y-1`}
-                          >
-                            <div className="flex flex-wrap items-center justify-between gap-2">
-                              <span className="text-sm font-semibold text-slate-900">
-                                {risk.title}
-                              </span>
-                              <span className={`text-xs font-semibold ${style.text}`}>
-                                {style.label}
-                              </span>
-                            </div>
-                            <p className="text-xs text-slate-700 leading-relaxed">
-                              {risk.message}
-                            </p>
-                            <p className="text-xs text-slate-800 pt-0.5">
-                              <strong className="font-semibold">Recommendation: </strong>
-                              {risk.suggestion}
+                  </div>
+                )}
+
+                {/* Phrase Transformation (Before vs After) */}
+                {analysis.alternative_phrases.length > 0 && (
+                  <div className="space-y-2 pt-2">
+                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                      {isVi ? 'Chuyển đổi câu từ ngoại giao:' : isAr ? 'تحويل العبارات إلى نبرة دبلوماسية:' : 'Phrase Transformations:'}
+                    </p>
+                    <div className="space-y-2">
+                      {analysis.alternative_phrases.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="grid grid-cols-1 md:grid-cols-2 gap-2 p-3 rounded-lg bg-muted/20 border border-border/60 text-xs"
+                        >
+                          <div className="space-y-1">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                              {isVi ? 'Bản gốc (Dễ gây mất thể diện):' : isAr ? 'الأصل:' : 'Original draft:'}
+                            </span>
+                            <p className="text-muted-foreground line-through decoration-destructive/60">
+                              "{item.original}"
                             </p>
                           </div>
-                        );
-                      })}
+                          <div className="space-y-1 md:border-s md:border-border/60 md:ps-3">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-accent">
+                              {isVi ? 'Đã tinh chỉnh (Chuẩn vị thế):' : isAr ? 'الصياغة الدبلوماسية:' : 'Diplomatic GCC alternative:'}
+                            </span>
+                            <p className="text-foreground font-medium">
+                              "{item.improved}"
+                            </p>
+                            <p className="text-[10.5px] text-muted-foreground">
+                              {item.reason}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
 
-                {/* Alternative Phrases */}
-                {analysis.alternative_phrases.length > 0 && (
-                  <div className="pt-5 border-t border-slate-200 space-y-3">
-                    <h3 className="text-sm font-semibold text-slate-900">
-                      Alternative Phrases & Nuance Upgrades
-                    </h3>
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse text-xs">
-                        <thead>
-                          <tr className="border-b border-slate-200 text-slate-500">
-                            <th className="py-2 pr-4 font-semibold">Original / Intent</th>
-                            <th className="py-2 pr-4 font-semibold">Culturally Refined</th>
-                            <th className="py-2 font-semibold">Nuance Difference</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-200">
-                          {analysis.alternative_phrases.map((phrase, idx) => (
-                            <tr key={idx} className="align-top">
-                              <td className="py-3 pr-4 text-slate-600">
-                                {phrase.original}
-                              </td>
-                              <td className="py-3 pr-4 font-medium text-slate-900">
-                                {phrase.improved}
-                              </td>
-                              <td className="py-3 text-slate-600">{phrase.reason}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                {/* Cultural Analysis Aspects */}
+                {analysis.cultural_analysis.length > 0 && (
+                  <div className="pt-2 border-t border-border/50">
+                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                      {isVi ? 'Phân tích chiến lược giao thương:' : isAr ? 'تحليل استراتيجية التواصل:' : 'Strategic Insights:'}
+                    </p>
+                    <div className="grid gap-2 text-xs">
+                      {analysis.cultural_analysis.map((item, idx) => (
+                        <div key={idx} className="p-2.5 rounded-lg bg-muted/20 border border-border/50">
+                          <span className="font-semibold text-foreground">{item.aspect}: </span>
+                          <span className="text-muted-foreground">{item.summary}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
-
-                {/* Knowledge Base Provenance & Nuance Disclaimer */}
-                <div className="pt-4 border-t border-slate-200 text-xs text-slate-500 space-y-1.5">
-                  <div className="flex items-center gap-1.5 font-semibold text-slate-700">
-                    <BookCheck className="w-3.5 h-3.5 text-emerald-600" aria-hidden="true" />
-                    <span>
-                      Grounded in Verified Knowledge Base (
-                      {analysis.pipeline.knowledgeEntry.sources.join(' · ')})
-                    </span>
-                  </div>
-                  <p className="leading-relaxed">{analysis.confidence_note}</p>
-                </div>
-              </section>
+              </div>
             </>
           )}
         </div>

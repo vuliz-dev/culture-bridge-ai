@@ -10,7 +10,7 @@ export function CountryFlag({ country, className = 'w-5 h-5' }: CountryFlagProps
     return (
       <svg
         viewBox="0 0 24 24"
-        className={`${className} rounded-full shrink-0 border border-slate-200`}
+        className={`${className} rounded-full shrink-0 border border-border shadow-xs`}
         aria-hidden="true"
       >
         <rect width="24" height="24" fill="#DA251D" />
@@ -26,7 +26,7 @@ export function CountryFlag({ country, className = 'w-5 h-5' }: CountryFlagProps
     return (
       <svg
         viewBox="0 0 24 24"
-        className={`${className} rounded-full shrink-0 border border-slate-200`}
+        className={`${className} rounded-full shrink-0 border border-border shadow-xs`}
         aria-hidden="true"
       >
         <rect x="6" y="0" width="18" height="8" fill="#00732F" />
@@ -41,7 +41,7 @@ export function CountryFlag({ country, className = 'w-5 h-5' }: CountryFlagProps
   return (
     <svg
       viewBox="0 0 24 24"
-      className={`${className} rounded-full shrink-0 border border-slate-200`}
+      className={`${className} rounded-full shrink-0 border border-border shadow-xs`}
       aria-hidden="true"
     >
       <rect width="24" height="24" fill="#8D1B3D" />

@@ -1,29 +1,166 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  /* ── Colour tokens (warm teal + terracotta + cream) ── */
+  --color-background: hsl(36 44% 95%);
+  --color-foreground: hsl(193 34% 12%);
+
+  --color-card: hsl(40 50% 98%);
+  --color-card-foreground: hsl(193 34% 12%);
+
+  --color-primary: hsl(179 42% 23%);
+  --color-primary-foreground: hsl(40 55% 96%);
+
+  --color-secondary: hsl(34 34% 89%);
+  --color-secondary-foreground: hsl(193 30% 16%);
+
+  --color-muted: hsl(34 26% 91%);
+  --color-muted-foreground: hsl(193 12% 38%);
+
+  --color-accent: hsl(15 58% 40%);
+  --color-accent-foreground: hsl(40 60% 97%);
+
+  --color-destructive: hsl(4 62% 43%);
+  --color-destructive-foreground: hsl(40 60% 97%);
+
+  --color-border: hsl(32 22% 83%);
+  --color-input: hsl(32 20% 78%);
+  --color-ring: hsl(15 58% 40%);
+
+  --color-verified: hsl(170 36% 28%);
+  --color-verified-soft: hsl(170 24% 90%);
+  --color-copper-soft: hsl(18 58% 91%);
+  --color-gold: hsl(36 60% 66%);
+  --color-sand: hsl(33 36% 86%);
+
+  /* ── Typography ── */
+  --font-display: Fraunces, Georgia, "Times New Roman", serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Plus Jakarta Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+/* ── Base layer ── */
 @layer base {
   html,
   body {
     font-family: var(--font-sans);
-    background-color: #f8fafc;
-    color: #0f172a;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01" 1, "cv01" 1;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
+  [dir="rtl"] body {
+    font-family: var(--font-arabic);
+  }
+
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
   }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] .display,
+  [dir="rtl"] .font-display {
+    font-family: var(--font-arabic);
+  }
+
+  * {
+    border-color: var(--color-border);
+  }
+
+  ::selection {
+    background: hsl(15 58% 40% / 0.22);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Custom utilities ── */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.paper-glow {
+  background-image:
+    radial-gradient(56% 46% at 80% 6%, hsl(15 58% 40% / 0.16), transparent 72%),
+    radial-gradient(46% 46% at 2% 2%, hsl(179 42% 23% / 0.12), transparent 74%);
+}
+
+.motif-teal {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke-width='1'%3E%3Cpath d='M36 2 44 15 58 8 51 22 66 26 53 34 62 47 47 43 44 58 36 46 28 58 25 43 10 47 19 34 6 26 21 22 14 8 28 15Z' stroke='%23225552' stroke-opacity='0.16'/%3E%3Ccircle cx='36' cy='30' r='3' stroke='%23b4552f' stroke-opacity='0.18'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 72px 72px;
+}
+
+.arch-top {
+  border-start-start-radius: 11rem;
+  border-start-end-radius: 11rem;
+  border-end-start-radius: 0.75rem;
+  border-end-end-radius: 0.75rem;
+}
+
+.rtl-flip {
+  display: inline-flex;
+}
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+.scrollbar-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+.scrollbar-slim::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-slim::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 999px;
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+.bridgely-container {
+  width: 100%;
+  max-width: 1360px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+/* ── Animations ── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+
+.animate-rise {
+  animation: rise 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.animate-fade {
+  animation: fade 0.35s ease-out both;
+}
+.animate-pulse-soft {
+  animation: pulse-soft 1.4s ease-in-out infinite;
 }

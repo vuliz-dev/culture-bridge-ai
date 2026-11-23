@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import {
   Compass,
+  Home,
   Mail,
   MessageSquare,
   X,
@@ -7,6 +9,8 @@ import {
 import { SCENARIO_OPTIONS } from '../data/culturalKnowledgeBase.ts';
 import type { ActiveScreen, BusinessContext } from '../types/culturebridge.ts';
 import { CountryFlag } from './CountryFlag.tsx';
+import { Wordmark } from './Brand.tsx';
+import { useI18n } from '../i18n/index.tsx';
 
 interface SidebarNavProps {
   activeScreen: ActiveScreen;
@@ -16,36 +20,6 @@ interface SidebarNavProps {
   onCloseMobile: () => void;
 }
 
-const NAV_ITEMS: {
-  id: ActiveScreen;
-  step: string;
-  label: string;
-  subtitle: string;
-  icon: typeof Compass;
-}[] = [
-  {
-    id: 'context',
-    step: '01',
-    label: 'Business Context',
-    subtitle: 'Market, scenario & roles',
-    icon: Compass,
-  },
-  {
-    id: 'email',
-    step: '02',
-    label: 'AI Email Assistant',
-    subtitle: 'Transform & cultural check',
-    icon: Mail,
-  },
-  {
-    id: 'simulator',
-    step: '03',
-    label: 'Negotiation Simulator',
-    subtitle: 'Multi-turn partner practice',
-    icon: MessageSquare,
-  },
-];
-
 export function SidebarNav({
   activeScreen,
   onSelectScreen,
@@ -53,39 +27,75 @@ export function SidebarNav({
   mobileOpen,
   onCloseMobile,
 }: SidebarNavProps) {
+  const { t } = useI18n();
+
   const scenarioLabel =
     SCENARIO_OPTIONS.find((s) => s.value === context.scenario)?.label ??
     context.scenario;
 
+  const navItems = [
+    {
+      id: 'context' as ActiveScreen,
+      step: '01',
+      label: t.workspace.steps.context,
+      subtitle: 'Market, scenario & roles',
+      icon: Compass,
+    },
+    {
+      id: 'email' as ActiveScreen,
+      step: '02',
+      label: t.workspace.steps.email,
+      subtitle: 'Transform & cultural check',
+      icon: Mail,
+    },
+    {
+      id: 'simulator' as ActiveScreen,
+      step: '03',
+      label: t.workspace.steps.negotiation,
+      subtitle: 'Multi-turn partner practice',
+      icon: MessageSquare,
+    },
+  ];
+
   const navContent = (
-    <div className="flex flex-col h-full bg-[#0F172A] text-slate-100 w-[260px] shrink-0">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
-        <a
-          href="#context"
-          onClick={(e) => {
-            e.preventDefault();
-            onSelectScreen('context');
-            onCloseMobile();
-          }}
-          className="text-lg font-bold tracking-tight text-white whitespace-nowrap shrink-0"
-        >
-          CultureBridge AI
-        </a>
+    <div className="relative flex flex-col h-full bg-primary text-primary-foreground w-[265px] shrink-0 overflow-hidden shadow-xl">
+      {/* Background motif overlay */}
+      <div
+        aria-hidden="true"
+        className="motif-teal pointer-events-none absolute inset-0 opacity-15"
+      />
+
+      {/* Brand Header */}
+      <div className="relative z-10 flex items-center justify-between px-5 py-4 border-b border-primary-foreground/15">
+        <Link to="/" className="text-white hover:opacity-90 transition-opacity">
+          <Wordmark className="text-white [&>span:first-child]:bg-primary-foreground [&>span:first-child]:text-primary" />
+        </Link>
         <button
           type="button"
           onClick={onCloseMobile}
           aria-label="Close navigation menu"
-          className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+          className="lg:hidden p-1.5 rounded-lg text-primary-foreground/70 hover:text-white hover:bg-white/10 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
-      <nav aria-label="Primary workflow" className="px-3 py-5 space-y-1.5 flex-1">
-        <p className="px-3 pb-2 text-xs font-semibold text-slate-400">
-          Copilot Workflow
-        </p>
-        {NAV_ITEMS.map((item) => {
+      {/* Workflow Navigation */}
+      <nav aria-label="Primary workflow" className="relative z-10 px-3 py-5 space-y-1.5 flex-1">
+        <div className="flex items-center justify-between px-3 pb-2">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold">
+            Copilot Workflow
+          </p>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1 text-[11px] text-primary-foreground/70 hover:text-white transition-colors"
+          >
+            <Home className="size-3" />
+            <span>Home</span>
+          </Link>
+        </div>
+
+        {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeScreen === item.id;
           return (
@@ -97,25 +107,25 @@ export function SidebarNav({
                 onCloseMobile();
               }}
               aria-current={isActive ? 'page' : undefined}
-              className={`w-full flex items-start gap-3 px-3 py-3 rounded-lg text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
+              className={`w-full flex items-start gap-3 px-3.5 py-3 rounded-lg text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                 isActive
-                  ? 'bg-[#4F46E5] text-white'
-                  : 'text-slate-300 hover:bg-white/[0.06] hover:text-white'
+                  ? 'bg-accent text-accent-foreground shadow-md font-semibold'
+                  : 'text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-white'
               }`}
             >
               <Icon
                 className={`w-4 h-4 mt-0.5 shrink-0 ${
-                  isActive ? 'text-white' : 'text-slate-400'
+                  isActive ? 'text-accent-foreground' : 'text-primary-foreground/60'
                 }`}
                 aria-hidden="true"
               />
               <div className="min-w-0">
-                <div className="text-sm font-semibold whitespace-nowrap truncate">
+                <div className="text-[13.5px] whitespace-nowrap truncate font-semibold">
                   {item.step}. {item.label}
                 </div>
                 <div
-                  className={`text-xs mt-0.5 truncate ${
-                    isActive ? 'text-indigo-100' : 'text-slate-400'
+                  className={`text-[11px] mt-0.5 truncate ${
+                    isActive ? 'text-accent-foreground/80' : 'text-primary-foreground/60'
                   }`}
                 >
                   {item.subtitle}
@@ -126,35 +136,36 @@ export function SidebarNav({
         })}
       </nav>
 
-      <div className="px-5 py-5 border-t border-white/10 space-y-3">
-        <div className="text-xs font-semibold text-slate-400">
-          Active Context
+      {/* Active Context Panel */}
+      <div className="relative z-10 px-5 py-5 border-t border-primary-foreground/15 bg-primary-foreground/[0.04] space-y-3">
+        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold">
+          {t.workspace.activeContext}
         </div>
-        <div className="flex items-center gap-2.5 text-sm font-medium text-white">
+        <div className="flex items-center gap-2.5 text-sm font-semibold text-white">
           <CountryFlag country="Vietnam" className="w-4 h-4" />
           <span>VN</span>
-          <span className="text-slate-400" aria-hidden="true">
+          <span className="text-primary-foreground/50" aria-hidden="true">
             →
           </span>
           <CountryFlag country={context.targetCountry} className="w-4 h-4" />
           <span>{context.targetCountry}</span>
         </div>
-        <dl className="space-y-1.5 text-xs text-slate-300">
+        <dl className="space-y-1.5 text-xs text-primary-foreground/80">
           <div className="flex justify-between gap-2">
-            <dt className="text-slate-400">Scenario</dt>
-            <dd className="font-medium text-right truncate">{scenarioLabel}</dd>
+            <dt className="text-primary-foreground/60">{t.common.scenario}</dt>
+            <dd className="font-medium text-right truncate text-white">{scenarioLabel}</dd>
           </div>
           <div className="flex justify-between gap-2">
-            <dt className="text-slate-400">Your role</dt>
-            <dd className="font-medium text-right truncate">{context.yourRole}</dd>
+            <dt className="text-primary-foreground/60">{t.common.yourRole}</dt>
+            <dd className="font-medium text-right truncate text-white">{context.yourRole}</dd>
           </div>
           <div className="flex justify-between gap-2">
-            <dt className="text-slate-400">Partner</dt>
-            <dd className="font-medium text-right truncate">{context.partnerRole}</dd>
+            <dt className="text-primary-foreground/60">{t.common.partner}</dt>
+            <dd className="font-medium text-right truncate text-white">{context.partnerRole}</dd>
           </div>
           <div className="flex justify-between gap-2">
-            <dt className="text-slate-400">Output</dt>
-            <dd className="font-medium text-right truncate">
+            <dt className="text-primary-foreground/60">{t.common.output}</dt>
+            <dd className="font-medium text-right truncate text-white">
               {context.language === 'english_arabic'
                 ? 'English + Arabic'
                 : 'English'}
@@ -167,7 +178,7 @@ export function SidebarNav({
 
   return (
     <>
-      <aside className="hidden lg:flex lg:flex-col lg:shrink-0 border-r border-slate-800">
+      <aside className="hidden lg:flex lg:flex-col lg:shrink-0 border-r border-border">
         {navContent}
       </aside>
 
@@ -179,7 +190,7 @@ export function SidebarNav({
           aria-label="Navigation menu"
         >
           <div
-            className="fixed inset-0 bg-slate-950/60"
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs"
             onClick={onCloseMobile}
           />
           <div className="relative z-10 flex h-full">{navContent}</div>
